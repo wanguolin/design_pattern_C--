@@ -1,0 +1,14 @@
+\inputcss css/main.css
+ 
+\htmlimageformat{png} 
+ 
+\imgpreamble 
+\let\ORIGdocument\document 
+\def\document{\ORIGdocument\Large} 
+\endimgpreamble
+
+\def\htmlpic#1{\htmlonly\rawhtml<img src="#1">\endrawhtml\endhtmlonly}
+
+\setkeyword{using namespace inline class template typename protected public private const auto break case char continue default do double else extern float for goto if int long register return short sizeof static struct switch typedef union signed unsigned void while bool BOOL false FALSE this new delete try catch throw volatile naked __asm _asm __declspec __stdcall __fastcall __based __cdecl __declspec __except __far __fastcall __finally __fortran __huge __inline __int16 __int32 __int64 __int8 __interrupt __leave __loadds __near __pascal __saveregs __segment __segname __self __stdcall __try __uuidofaaa #define #error #include #elif #if #line #else #ifdef #pragma #endif #ifndef #undef}
+
+\setconstant{NULL}
