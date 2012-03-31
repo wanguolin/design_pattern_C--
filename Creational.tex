@@ -9,79 +9,109 @@ Creational design patterns abstract the instantiation process. They help make a 
 
 \htmlpic{images/AbstractFactory.png}
 
+\textbf{Structure 结构}
+
 在上图中AbstractFactory、AbstractProductA和AbstractProductB几个抽象基类，分别派生出用来产生两种实际产品的类厂1和2，经由这两个类厂的CreateProductA和CreateProductB方法使用AbstractProduct所派生出的两类具体产品家族来生产A和B所下辖1-2型产品。
 
-Intent 
-意图
-\verb{
+\textbf{Intent 意图} 
+
 Provide an interfact for creating families of related or dependent objects without specifying their concrete classes.
+
 在无需指定具象接口的情况下，提供了一个接口，用来创建一族互相关联或者依赖的对象。
-}
 
-\verb{
-Also Known As: Kit
-别名：Kit
-}
+\textbf{Also Known As 别名}
 
-Applicability
-适用性
+Kit
 
-\verb{
-A system should be independent of how its products are created, composed and represented.
-一个应当独立创建、组合和表示的系统。
+\textbf{Applicability 适用性}
 
-A system should be configured with one of multiple families of products.
-一个应当由多个产品族类中的一个所配置的系统。
+\begin{itemize}
+\item A system should be independent of how its products are created, composed and represented.
 
-A family of related product objects is designed to be used together, and you need to enforce this constraint.
-一个被设计成协同使用并且需要强调其约束性的产品对象族。
+      一个应当独立创建、组合和表示的系统。
 
-You want to provide a class library of products, and you want to reveal just their interfaces, not their implementations.
-你想提供一个只暴露接口而非实现的产品类库。
-}
+\item A system should be configured with one of multiple families of products.
 
-Structure
-结构
+      一个应当由多个产品族类中的一个所配置的系统。
 
-\verb{
-优缺点：
-1、抽象工厂分离了接口和实现。
-2、产品有产品的共同抽象基类，工厂有各自工厂的抽象基类，他们的生命周期在C++中可以通过各自的基类指针统一管理。
-3、拥有共同的抽象基类不同的产品系列可以经由共同的工厂抽象基类所派生出来的不同类厂所一致。
-4、AbstractFactory这个抽象基类最初的纯虚方法限制了所能产生的对象集合，在实际开发中如果扩展产品，需要修改基类和所有派生类的代码，导致维护代价和大规模代码重新编译的代价。
+\item A family of related product objects is designed to be used together, and you need to enforce this constraint.
 
-实现：
-1、若是应用中需要每个产品仅有一个实例存在，可使用Singleton模式。
-2、如果有多个可能的产品系列，每个可能的产品系列虽然差别很小，仍需不同的工厂实现，因此可以考虑通过复制原型创建新的产品，参考Prototype模式实现。
-3、鉴于中提到的维护代价，有一种不够安全和良好的编码习惯，可以在构造时刻增加入参，来区别新的对象类型。对于C++这样的强类型语言来说，如果需要与特定的派生类别进行相关操作，而该操作又不能通过抽象接口所得到，用户可能会考虑使用dynamic—_cast转换，此举并非安全，因为可能会导致转换失败，这是权宜之计。
-}
+      一个被设计成协同使用并且需要强调其约束性的产品对象族。
+
+\item You want to provide a class library of products, and you want to reveal just their interfaces, not their implementations.
+
+      你想提供一个只暴露接口而非实现的产品类库。
+\end{itemize}
+
+\textbf{Consequences GoF评论}
+
+\xrtag{AbstractFactory优缺点}{AbstractFactory"优缺点"}
+The AbstractFactory pattern has the following benefits and liabilities:
+
+抽象工厂模式有着如下的便利和负担：
+
+\begin{enumerate}
+
+\item It isolates concrete classes.
+
+      抽象工厂分离了接口和实现。
+
+\item It makes exchanging product families easy.
+    
+      产品有产品的共同抽象基类，工厂有各自工厂的抽象基类，他们的生命周期在C++中可以通过各自的基类指针统一管理。
+
+
+\item It promotes consistency among products.
+
+      拥有共同的抽象基类不同的产品系列可以经由共同的工厂抽象基类所派生出来的不同类厂所一致。
+
+\item Supporting new kinds of products is difficult.
+
+      AbstractFactory这个抽象基类最初的纯虚方法限制了所能产生的对象集合，在实际开发中如果扩展产品，需要修改基类和所有派生类的代码，导致维护代价和大规模代码重新编译的代价。\xrtag{AbstractFactory优缺点4}{"优缺点第四条"}
+\end{enumerate}
+
+\textbf{Implentation}
+\textbf{实现}
+
+\begin{enumerate}
+
+\item Fatories as Singletons.
+      若是应用中需要每个产品仅有一个实例存在，可使用Singleton模式。
+
+\item Creating the products.
+      如果有多个可能的产品系列，每个可能的产品系列虽然差别很小，仍需不同的工厂实现，因此可以考虑通过复制原型创建新的产品，参考Prototype模式实现。
+
+\item Defining extensible factories.
+      鉴于\ref{AbstractFactory优缺点}中提到的维护代价，有一种不够安全和良好的编码习惯，可以在构造时刻增加入参，来区别新的对象类型。对于C++这样的强类型语言来说，如果需要与特定的派生类别进行相关操作，而该操作又不能通过抽象接口所得到，用户可能会考虑使用dynamic—_cast转换，此举并非安全，因为可能会导致转换失败，这是权宜之计。
+
+\end{enumerate}
 
 \subsection{代码实现}
 
-先用头文件定义两个抽象基类，其中抽象工厂具有两个必须在派生类中被实现，抽象基类无需实现的纯虚函数，用来留给所派生的不同的工厂用自家的创造方法来重载。考虑到对象实例可能具有不同的销毁方式，定义了虚析构。
+    先用头文件定义两个抽象基类，其中抽象工厂具有两个必须在派生类中被实现，抽象基类无需实现的纯虚函数，用来留给所派生的不同的工厂用自家的创造方法来重载。考虑到对象实例可能具有不同的销毁方式，定义了虚析构。
 \scminput{code/Creational/AbstractFactory/AbstractFactory.h}
 \scminput{code/Creational/AbstractFactory/AbstractTeenager.h}
 
-接下来普青产品经理和普青程序员有着共同的抽象基类，抽象青年。
+    接下来普青产品经理和普青程序员有着共同的抽象基类，抽象青年。
 \scminput{code/Creational/AbstractFactory/NormalTeenagerPM.h}
 \scminput{code/Creational/AbstractFactory/NormalTeenagerPM.cpp}
 \scminput{code/Creational/AbstractFactory/NormalTeenagerProgrammer.h}
 \scminput{code/Creational/AbstractFactory/NormalTeenagerProgrammer.cpp}
 
-同样，文青产品经理和文青程序员也有着共同的抽象基类。
+    同样，文青产品经理和文青程序员也有着共同的抽象基类。
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerPM.h}
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerPM.cpp}
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerProgrammer.h}
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerProgrammer.cpp}
 
-现在派生出来一个专门生产产品经理的工厂。
+    现在派生出来一个专门生产产品经理的工厂。
 \scminput{code/Creational/AbstractFactory/PMFactory.h}
 \scminput{code/Creational/AbstractFactory/PMFactory.cpp}
 
-再派生一个专门生产程序员的工厂。
+    再派生一个专门生产程序员的工厂。
 \scminput{code/Creational/AbstractFactory/ProgrammerFactory.h}
 \scminput{code/Creational/AbstractFactory/ProgrammerFactory.cpp}
 
-两个工厂基类类型的指针指向两种不同的工厂实例，各种青年的一个容器，构造和析构
+    两个工厂基类类型的指针指向两种不同的工厂实例，各种青年的一个容器，构造和析构
 \scminput{code/Creational/AbstractFactory/client.cpp}
 
