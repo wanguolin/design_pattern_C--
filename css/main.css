@@ -152,6 +152,9 @@ DIV.tl {
 	POSITION: fixed;
 	TOP: 0.4cm;
 }
+
+.verbatim	{color: black}}
+
 .caption {
 	FONT-SIZE: small; TEXT-ALIGN: center
 }
