@@ -7,12 +7,50 @@ Creational design patterns abstract the instantiation process. They help make a 
 \section{AbstractFactory - 抽象工厂}
 
 
-\htmlpic{images/AbstractFactory.png}
-
 \textbf{Structure 结构}
 
-在上图中AbstractFactory、AbstractProductA和AbstractProductB几个抽象基类，分别派生出用来产生两种实际产品的类厂1和2，经由这两个类厂的CreateProductA和CreateProductB方法使用AbstractProduct所派生出的两类具体产品家族来生产A和B所下辖1-2型产品。
+\htmlpic{images/AbstractFactory.png}
 
+在上图中AbstractFactory、AbstractProductA和AbstractProductB分别个抽象基类，分别派生出用来产生两种实际产品A和B的类厂1和2，经由这两个类厂的CreateProductA和CreateProductB方法使用AbstractProduct所派生出的两类具体产品家族来生产A和B所下辖1-2型产品。
+
+\textbf{Participants 组成}
+
+\begin{itemize}
+\small
+\item \textbf{AbstractFactory} (WidgetFactory)
+
+	\begin{itemize}
+		\item declares an interface for operations that create abstract product objects.
+	\end{itemize}
+
+\item \textbf{ConcreteFactory} (MotiWidgetFactory, PMWidgetFactory)
+	
+	\begin{itemize}
+		\item  operations to create concrete product objects.
+	\end{itemize}
+
+\item \textbf{AbstractProduct} (Window, ScrollBar)
+
+	\begin{itemize}
+		\item declares an interface for a type of product object.
+	\end{itemize}
+
+\item \textbf{ConcreteProduct} (MotiWindow, MotiScrollBar)
+
+	\begin{itemize}
+		\item defines a product objects to be created by the corresponding concrete factory.
+
+		\item implents the AbstractProduct interface.
+	\end{itemize}
+
+\item \textbf{Client} 
+
+	\begin{itemize}
+		\item  uses only interfaces decleared by AbstractFactory and AbstractProduct classes.
+	\end{itemize}
+\end{itemize}
+
+\normalize
 \textbf{Intent 意图} 
 
 Provide an interfact for creating families of related or dependent objects without specifying their concrete classes.
@@ -115,3 +153,13 @@ The AbstractFactory pattern has the following benefits and liabilities:
     两个工厂基类类型的指针指向两种不同的工厂实例，各种青年的一个容器，构造和析构
 \scminput{code/Creational/AbstractFactory/client.cpp}
 
+
+\section{Builder - 构建器}
+
+\textbf{ Structure 结构 }
+
+\htmlpic{images/Builder.png}
+
+图中Director的构造函数持有Builder基类指针，Director在构造时刻传入同样Builder指针所指向的不同派生类实例，使Director构造出来不同的具体对象。
+
+\textbf{  }
