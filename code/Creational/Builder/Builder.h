@@ -7,9 +7,9 @@ class Builder
         Builder(){}
         virtual ~Builder(){}
 
-        virtual BuilderStepFirst()  = 0;
-        virtual BuilderStepSecond() = 0;
-        virtual BuilderStepThird()  = 0;
+        virtual void BuilderStepFirst()  = 0;
+        virtual void BuilderStepSecond() = 0;
+        virtual void BuilderStepThird()  = 0;
 };
 
 #endif

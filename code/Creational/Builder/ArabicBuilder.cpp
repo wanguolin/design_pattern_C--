@@ -3,12 +3,12 @@
 
 using namespace std;
 
-void ArabicBuilder::ArabicBuilder()
+ArabicBuilder::ArabicBuilder()
 {
 
 }
 
-void ArabicBuilder::~ArabicBuilder()
+ArabicBuilder::~ArabicBuilder()
 {
 
 }

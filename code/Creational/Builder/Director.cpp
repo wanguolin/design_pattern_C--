@@ -1,6 +1,5 @@
-#include "Director.h"
-
 #include "Builder.h"
+#include "Director.h"
 
 Director::Director( Builder* pBuilder) : m_pBuilder( pBuilder)
 {
@@ -13,9 +12,9 @@ Director::~Director()
 
 void Director::Constructor()
 {
-    pBuilder->BuilderStepFirst();
-    pBuilder->BuilderStepSecond();
-    pBuilder->BuilderStepThird();
+    m_pBuilder->BuilderStepFirst();
+    m_pBuilder->BuilderStepSecond();
+    m_pBuilder->BuilderStepThird();
 }
 
 

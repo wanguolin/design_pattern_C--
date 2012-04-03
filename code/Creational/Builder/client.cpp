@@ -1,7 +1,8 @@
+#include <cstdlib>
+
 #include "EnglishBuilder.h"
 #include "ArabicBuilder.h" 
 #include "Director.h"
-
 
 int main()
 {
@@ -25,4 +26,6 @@ int main()
 
     delete ptr_build_english_counting;
     ptr_build_english_counting = NULL;
+
+    return 0;
 }

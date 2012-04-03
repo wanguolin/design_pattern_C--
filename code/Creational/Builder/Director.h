@@ -1,17 +1,17 @@
 #ifndef _DIRECTOR_H_
 #define _DIRECTOR_H_
 
-class Director;
+class Builder;
 
 class Director 
 {
+    private:
+        Builder* m_pBuilder;
     public:
-        Director();
+        Director( Builder* m_pBuilder);
         ~Director();
         void Constructor();
     
-    private:
-        Builder* m_pBuilder;
 
 };
 
