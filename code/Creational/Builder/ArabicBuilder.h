@@ -1,5 +1,5 @@
 #ifndef _ARABICBUILDER_H_
-#define _ARABICBUILDER_H__
+#define _ARABICBUILDER_H_
 
 #include "Builder.h"
 

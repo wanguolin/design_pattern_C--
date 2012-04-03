@@ -13,7 +13,9 @@ Director::~Director()
 
 void Director::Constructor()
 {
-    
+    pBuilder->BuilderStepFirst();
+    pBuilder->BuilderStepSecond();
+    pBuilder->BuilderStepThird();
 }
 
 

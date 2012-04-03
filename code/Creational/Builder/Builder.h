@@ -9,7 +9,7 @@ class Builder
 
         virtual BuilderStepFirst()  = 0;
         virtual BuilderStepSecond() = 0;
-        virtual BuilderStepThird    = 0;
+        virtual BuilderStepThird()  = 0;
 };
 
 #endif
