@@ -6,14 +6,17 @@ Creational design patterns abstract the instantiation process. They help make a 
 
 \section{AbstractFactory - 抽象工厂}
 
+\textbf{Also known as 别名}
 
-\textbf{Structure 结构}
+Kit
+
+\subsection{Structure 结构}
 
 \htmlpic{images/AbstractFactory.png}
 
-在上图中AbstractFactory、AbstractProductA和AbstractProductB分别个抽象基类，分别派生出用来产生两种实际产品A和B的类厂1和2，经由这两个类厂的CreateProductA和CreateProductB方法使用AbstractProduct所派生出的两类具体产品家族来生产A和B所下辖1-2型产品。
+在上图中AbstractFactory、AbstractProductA和AbstractProductB这三个抽象基类，分别派生出用来产生两种实际产品A和B的类厂1和2，经由这两个类厂的CreateProductA和CreateProductB方法使用AbstractProduct所派生出的两类具体产品家族来生产A和B所下辖1-2型产品。
 
-\textbf{Participants 组成}
+\subsection{Participants 组成}
 
 \begin{itemize}
 \small
@@ -48,20 +51,16 @@ Creational design patterns abstract the instantiation process. They help make a 
 	\begin{itemize}
 		\item  uses only interfaces decleared by AbstractFactory and AbstractProduct classes.
 	\end{itemize}
+\normalize
 \end{itemize}
 
-\normalize
-\textbf{Intent 意图} 
+\subsection{Intent 意图} 
 
 Provide an interfact for creating families of related or dependent objects without specifying their concrete classes.
 
 在无需指定具象接口的情况下，提供了一个接口，用来创建一族互相关联或者依赖的对象。
 
-\textbf{Also Known As 别名}
-
-Kit
-
-\textbf{Applicability 适用性}
+\subsection{Applicability 适用性}
 
 \begin{itemize}
 \item A system should be independent of how its products are created, composed and represented.
@@ -81,7 +80,7 @@ Kit
       你想提供一个只暴露接口而非实现的产品类库。
 \end{itemize}
 
-\textbf{Consequences GoF评论}
+\subsection{Consequences GoF评论}
 
 \xrtag{AbstractFactory优缺点}{AbstractFactory"优缺点"}
 The AbstractFactory pattern has the following benefits and liabilities:
@@ -105,21 +104,23 @@ The AbstractFactory pattern has the following benefits and liabilities:
 
 \item Supporting new kinds of products is difficult.
 
-      AbstractFactory这个抽象基类最初的纯虚方法限制了所能产生的对象集合，在实际开发中如果扩展产品，需要修改基类和所有派生类的代码，导致维护代价和大规模代码重新编译的代价。\xrtag{AbstractFactory优缺点4}{"优缺点第四条"}
+      AbstractFactory这个抽象基类最初的纯虚方法限制了所能产生的对象集合，在实际开发中如果扩展产品，需要修改基类和所有派生类的代码，导致维护代价和大规模代码重新编译的代价。
 \end{enumerate}
 
-\textbf{Implentation}
-\textbf{实现}
+\subsection{Implentation 实现}
 
 \begin{enumerate}
 
 \item Fatories as Singletons.
+
       若是应用中需要每个产品仅有一个实例存在，可使用Singleton模式。
 
 \item Creating the products.
+
       如果有多个可能的产品系列，每个可能的产品系列虽然差别很小，仍需不同的工厂实现，因此可以考虑通过复制原型创建新的产品，参考Prototype模式实现。
 
 \item Defining extensible factories.
+
       鉴于\ref{AbstractFactory优缺点}中提到的维护代价，有一种不够安全和良好的编码习惯，可以在构造时刻增加入参，来区别新的对象类型。对于C++这样的强类型语言来说，如果需要与特定的派生类别进行相关操作，而该操作又不能通过抽象接口所得到，用户可能会考虑使用dynamic—_cast转换，此举并非安全，因为可能会导致转换失败，这是权宜之计。
 
 \end{enumerate}
@@ -156,10 +157,109 @@ The AbstractFactory pattern has the following benefits and liabilities:
 
 \section{Builder - 构建器}
 
-\textbf{ Structure 结构 }
+\subsection{Structure 结构}
 
 \htmlpic{images/Builder.png}
 
 图中Director的构造函数持有Builder基类指针，Director在构造时刻传入同样Builder指针所指向的不同派生类实例，使Director构造出来不同的具体对象。
 
-\textbf{  }
+\subsection{Participants 组成}
+
+\begin{itemize}
+\small
+\item \textbf{Builder} (TextConverter)
+
+	\begin{itemize}
+		\item specifies an abstract interface for creating parts of a Product object.
+	\end{itemize}
+
+\item \textbf{ConcreteBuilder} (ASCIIConverter, TeXConverter, TextWidgetConverter)
+
+	\begin{itemize}
+		\item constructs and assembles parts of the product by implementing the Builder interface.
+
+		\item defines and keeps track of the representation it creates.
+
+		\item provides an interface for retrieving the product (e.g., GetASCIIText, GetTextWidget).
+	\end{itemize}
+
+\item \textbf{RTFReader}
+
+	\begin{itemize}
+		\item constructs an object using the Builder interface.
+	\end{itemize}
+
+\item \textbf{ASCIIText, TeXText, TextWidget}
+
+	\begin{itemize}
+		\item represents the complex object under construction. ConcreteBuilder builds the product's internal represrntation and defines the process by which it's assembled.
+
+		\item includes classes that define the constituent parts, including interfaces for assembling the parts into final result.
+	\end{itemize}
+\normalize
+\end{itemize}
+
+\subsection{Intend 意图}
+
+Separate the construction of a complex object from its representation so that the same construction process can create different representation.
+分离复杂对象的构造和表现，以此达到通过同样构建过程创造不同表现的目的。
+
+\subsection{Applicability 适用性}
+
+\begin{itemize}
+\item the algorithm for creating a complex object should be independent of the parts that make up the object and how they're assembled.
+
+      当独立于对象组成和封装的某复杂对象算法。
+
+\item the construction process must allow different representations for the object that's constructed.
+
+      对象的构造过程必须要有不同的表现。
+\end{itemize}
+
+\subsection{Consequences GoF评论}
+
+\begin{enumerate}
+
+\item It lets you vary a product's internal presentation.
+
+	  它通过给内建的导向器一个抽象接口，以达到一个构建的同时并隐藏这个产品的表示和内在结构的目的。改变产品的内在表示只需要定义一个新的构建器。
+
+\item It isolates code for construction and representation. 
+
+	 它的构造和表现代码是独立的。构建器模式通过封装复杂对象的构建和表示，产品更加模块化。
+
+\item It gives you finer control over the construction process.
+
+	  和一站式的创建型不同，构建器模式在导向器一步步的控制下完成。只有产品最终完成的时候，导向器才会从构建器中取回。构建器能够比其他创建型模式更好的反应产品的构造过程，使你能够在此过程中更好的循序控制产品构建的内在结果。
+
+\end{enumerate}
+
+\subsection{Implentation 实现}
+
+Typically there's an abstract Builder class that defines an operation for each component that a director may ask it to create. The operations do nothing by default. A ConcreteBuilder class overrides operations for components it's interested in creating.
+
+通常情况下，导向器可能会要求创建一个构建器类用来给每个组件定义一个操作。默认情况下什么都不做。一个ConcreteBuilder类重载了组件感兴趣的创建。
+
+Here are other implementation issues to consider:
+
+一些值得考虑的实现问题：
+
+\begin{enumerate}
+
+\item Assembly and contruction interface.
+
+	  装配和构造接口。构建器通过产品形态一步步的构建产品，因此构建器类的接口必须足够通用以便于构造满足所有现实产品形态的构造。
+
+	  一个关键问题是构造和装配过程的模型。只是简单的把构造请求追加到产品中通常已经足够，在RTF那个例子中，构建器转化下一个标记并且把它追加到已经在转换了的正文中。
+
+	  但是一些时候你可能需要在构造以先访问部分产品。Maze的例子中，MazeBuilder允许在房间之间加门，语法分析树这样自底向上构建的树形结构就是另一个例子。在这种情况下，生成器会将子节点返给导向者，然后导向者将他们回传给构建器去创建父节点。
+
+\item Why no abstract class for products?
+
+	  为什么没有为产品准备抽象类？通常情况下，具体构建器产生的产品之间在表现形式上相去甚远，以至于在其间抽象出共同的基类得不偿失。在RTF那个例子里，ASCIIText和TextWidget两个对象之间看起来不象会有共同接口的样子，并不需要。因为客户通常将合适的具体的构建器配给导向者，客户就能够构建器的具体的那一个子类在使用和能够相应的处理产品。
+
+\item Empty methods as default in Builder.
+
+      构建器中默认为空的方法。在C++中，构建方法特地不声明为纯虚而是定义为空，这使用户只重载他们感兴趣的操作。
+
+\end{enumerate}
