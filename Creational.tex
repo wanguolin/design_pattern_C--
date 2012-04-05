@@ -276,3 +276,79 @@ Here are other implementation issues to consider:
 \scminput{code/Creational/Builder/Director.h}
 \scminput{code/Creational/Builder/client.cpp}
 
+
+\section{Factory 工厂方法}
+
+\subsection{Structure 结构}
+
+\htmlpic{images/Factory.png}
+
+\textbf{ As known as 别名 }
+
+虚构造器 ( Virtual Constructor )
+
+\subsection{Participants 组成}
+
+\begin{itemize}
+\small
+
+\item \textbf{Product} (Document)
+	\begin{itemize}
+		\item defines the interface of objects the factory method creates.
+	\end{itemize}
+
+\item \textbf{ConcreteProduct} (MyDocument)
+	\begin{itemize}
+		\item implements the Product interface.
+	\end{itemize}
+
+\item \textbf{Creator} (Application)
+	\begin{itemize} 
+		\item declares the factory method, which returns an object of type Product. Creator may also define a default Implentation of the factory method that returns a default ConcreteProduct object.
+
+		\item may call the factory method to create a Product object.
+	\end{itemize}
+
+\item \textbf{ConcretCreator} (MyApplication)
+	\begin{itemize}
+		\item overrides the factory method to return an instance of a concreteProduct.
+	\end{itemize}
+
+\normalize
+\end{itemize}
+
+\subsection{Intend 意图}
+
+Define an interface for creating an object, but let subclasses decide which class to instantiate. Factory Method lets a class defer instantiation to subclasses.
+
+定义一个创建对象的接口，让子类决定实例化哪个类。Facroty方法使一个类的实例化延迟到子类。
+
+\subsection{Applicability 适用性}
+
+工厂模式适用于：
+
+\begin{itemize}
+
+\item a class can't anticipate the class of objects it must create.
+	
+	  一个类无法预知他所必需创建的对象的类的时候。
+
+\item a class wants its subclasses to specify the objects it creates.
+
+	  一个类想要他的子类来指定他所创建的对象的时候。
+
+\item classes delegate responsibility to one of several helper subclasses, and you want to localize the knowlege of which helper subclass is the delegate.
+
+	  类将职责委托给一些帮助子类中的一个，并且你希望将谁是这个代理帮助子类的信息局部化。
+
+\end{itemize}
+
+\subsection{Consequences GoF评论}
+
+工厂方法不再需要将特定应用相关的类绑定到你的代码中。代码只处理产品接口，虽然它可以和任何用户定义的ConcreteProduct类共同工作。
+
+工厂方法的一个潜在缺点是客户可能必须派生Creator，以创建一个特定的ConcreteProduct对象。但当客户必须要处理类变化的其他方面，必需派生Creator时，这样也成。
+
+下面是Factory Method模式的另外两种果效。
+
+
