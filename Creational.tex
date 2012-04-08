@@ -351,4 +351,20 @@ Define an interface for creating an object, but let subclasses decide which clas
 
 下面是Factory Method模式的另外两种果效。
 
+\begin{enumerate}
 
+\item Provides hooks for subclasses.
+      Hook子类。用工厂模式在一个类的内部创建对象总会比直接创建一个对象要灵活些。工厂方法挂接子类用以给对象提供一个扩展版本。
+
+\item Connects parallel class hierarchies.
+	  连接平衡的类层次。目前为止我们所看到的例子中，工厂方法只是被Creators调用。其实特别是在平行的类层次中，客户会发现工厂方法的用处。
+
+	  一个类将它的一些职责委托给一个独立的类的时候，就产生了平行类层次。参考交互控制的图形图像，用鼠标对他们进行拉伸、移动或是旋转。实现这样的一些操作并不总是那么容易，这通常需要存储和更新在中间状态进行操作的一些记录。这些状态只是在操作中需要，在图形对象的最终存储时并不需要。更有甚者，不同的图形在用户操作的时候呈现不同的行为。例如，拉伸一条线段的时候可能出现的效果是移动线段的一个断点，而拉伸一个文本的时候可能会改变行距。
+
+	  在这些限制之下，最好使用一个独立的Manipulator对象来实现交互并且保存特定的需要保存的轨迹状态。不同的图形通过使用不同的Manipuator子类来处理特殊的交互。最终Manipulator类层次平行于Figure，如图：
+
+	  \htmlpic{images/FactoryConsequence.png}
+
+	  Figure类提供了一个可以创建一个与Figure相对应的Manipulator的CreateManipulator工厂方法，Figure的子类重载了这个方法来返回一个恰当的Manipulator子类的实例。Figure类可以实现CreateManipulator来返回一个默认的Manipuator实例，Figure子类也可以简单的默认继承。Figure类并不需要响应Manipulator子类层次，因此他们是部分并行的。
+
+	  注意工厂类如何定义两个类层次之间的关系，他将类之间的从属关系局部化了。
