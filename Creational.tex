@@ -368,3 +368,97 @@ Define an interface for creating an object, but let subclasses decide which clas
 	  Figure类提供了一个可以创建一个与Figure相对应的Manipulator的CreateManipulator工厂方法，Figure的子类重载了这个方法来返回一个恰当的Manipulator子类的实例。Figure类可以实现CreateManipulator来返回一个默认的Manipuator实例，Figure子类也可以简单的默认继承。Figure类并不需要响应Manipulator子类层次，因此他们是部分并行的。
 
 	  注意工厂类如何定义两个类层次之间的关系，他将类之间的从属关系局部化了。
+
+\end{enumerate}
+
+\subsection{Implentation 实现}
+
+Consider the following issues when applying the Factory Method pattern:
+
+考虑工厂模式的如下两种状况：
+
+\begin{enumerate}
+	\item Two major varieties.
+
+		  主要有两种不同情况：
+
+		  \begin{enumerate}
+		  		\item 在Creator是一个抽象类并且没有提供一个对他所声明的抽象方法的实现的时候。
+
+				\item 在Creator是一个具体的类并且提供了工厂方法的默认实现的情况下。
+		  \end{enumerate}
+
+   		  第一种情况，需要子类来定义实现，因为没有合理的缺省市县。它避免了不得不实例化不可预见类的问题，第二种情况中，具体的Creator主要因为灵活性才使用工厂方法。它所遵循的准则是，“用一个独立的操作创建对象，这样的子类才能重定义它们的创建方式”，这条准则保证了子类的设计者能够在必要的时候改变父类所实例化的对象的类。
+
+	\item Parameterized factory method.
+		  
+		  参数化工厂方法。
+
+		  该模式的另一种情况使得工厂方法可以创建多种产品。工厂方法采用一个参数，用来标识要被创建的对象种类的参数。工厂方法创建所有的对象将共享Product接口。在Document例子中，Application可能支持不同种类的Document。你给CreateDocument传递一个外部参数来制定将要创建的文档的种类。
+
+	\item Language-specific variants and isseus.
+
+	      不同语言的变化和问题。
+
+		  不同的语言有助于产生其他一些有趣的变化和警告。
+
+		  Smalltalk略去
+
+		  C++工厂方法都是虚函数并且常常是纯虚函数。一定要注意在Creator的构造器中不要调用工厂方法——在ConcreteCreator中该方法还不可用。
+
+		  只要你使用按需创建产品的访问者操作，很小心的访问产品，你就可以避免这一点。构造器只是将产品初始化为0，而不是创建一个具体产品。访问者返回该产品。但首先它要检查确定该产品的存在，如果该产品不存在，访问者就创建它，这种技术优势被称为lazy initialization。下面的代码给出了一个典型的实现：
+
+\begin{schemedisplay}
+class Creator{
+	public:
+		Product* GetProduct();
+	protect:
+		virtual Product* CreateProduct();
+	private:
+		Product* _product;
+		  	
+};
+
+Product* Creator::GetProduct(){
+	if(_product == 0){
+		_product = CreateProduct();
+	}
+	return _product;
+}
+\end{schemedisplay}
+
+	\item Using templates to avoid subclassing.
+
+	使用模板避免创建子类。正如我们已经提及的，工厂方法另一个潜在的问题是它们可能仅为了创建适当的Product对象而迫使你创建Creator子类。在C++中另一个解决方法是提供Creator的一个模板子类，它使用Product类作为模板参数：
+
+\begin{schemedisplay}
+class Creator{
+	public:
+		virtual Product* CreateProduct() = 0;
+};
+
+template <class TheProduct> class StandardCreator : public Creator{
+	public:
+		virtual Product* CreateProduct();
+};
+
+template <class TheProduct>
+Product* StandardCreator<TheProduct>::CreateProduct(){
+	return new TheProduct;
+}
+\end{schemedisplay}
+
+	\item Naming conventions
+
+	使用命名约定是一个好习惯，它可以清楚地说明你正在使用工厂方法。例如Macintosh的应用框架MacApp总是声明那些定义为工厂方法的抽象操作为Class× DoMakeClass(), 此处Class是Product类。
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+
