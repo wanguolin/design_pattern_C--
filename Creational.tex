@@ -1,9 +1,11 @@
+\xrtag{Creational}{Creational 创建型}
 \chapter{Creational Pattern 创建型}
 
 Creational design patterns abstract the instantiation process. They help make a system independent of how its objects are created, composed, and represented. A class creational pattern uses inheritacento vary the class that's instantiated, whereas an object creational pattern will delegate instantiation to another object.
 
 创建型抽象了实例化的过程。他们使一个系统能够独立的创建、组合和表示。一个创建型类使用继承使其实例多样化，而一个创建型对象则将实例化委托给另一个对象。
 
+\xrtag{AbstractFactory}{AbstractFactory 抽象工厂}
 \section{AbstractFactory - 抽象工厂}
 
 \textbf{Also known as 别名}
@@ -154,7 +156,7 @@ The AbstractFactory pattern has the following benefits and liabilities:
     两个工厂基类类型的指针指向两种不同的工厂实例，各种青年的一个容器，构造和析构
 \scminput{code/Creational/AbstractFactory/client.cpp}
 
-
+\xrtag{Build}{Builder 构建器}
 \section{Builder - 构建器}
 
 \subsection{Structure 结构}
@@ -276,8 +278,8 @@ Here are other implementation issues to consider:
 \scminput{code/Creational/Builder/Director.h}
 \scminput{code/Creational/Builder/client.cpp}
 
-
-\section{Factory 工厂方法}
+\xrtag{FactoryMethod}{FactoryMethod 工厂方法}
+\section{FactoryMethod 工厂方法}
 
 \subsection{Structure 结构}
 
@@ -466,7 +468,123 @@ Product* StandardCreator<TheProduct>::CreateProduct(){
 \scminput{code/Creational/FactoryMethod/client.cpp}
 
 
+\xrtag{Prototype}{Prototype 原型}
+\section{Prototype 原型}
 
+\subsection{Structure 结构}
 
+\htmlpic{images/Prototype.png}
+
+\subsection{Participants 组成}
+
+\begin{itemize}
+\small
+\item \textbf{Prototype} (Graphic)
+
+	\begin{itemize}
+		\item declares an interface for cloning itself.
+	\end{itemize}
+
+\item \textbf{ConcretePrototype} (Staff, WholeNote, HalfNote)
+
+	\begin{itemize}
+		\item implents an operation for cloning itself.
+	\end{itemize}
+
+\item \textbf{Client} (GraphicTool)
+
+	\begin{itemize}
+		\item creates a new object by asking a prorotype to clone itself.
+	\end{itemize}
+\normalize
+\end{itemize}
+
+\subsection{Collaborations 协作}
+
+\begin{itemize}
+\item A client asks a prototype to clone itself.
+\end{itemize}
+
+\subsection{Consequences GoF评论}
+
+Prototype has many of the same consequences that and  have: It hides the concrete product classes from the client, thereby reducing the number of names clients know about. Moreover, these patterns let a client work with application-specific classes without modification.
+
+Prototype有许多和一样的果效：他们对客户隐藏了具体的产品类，从而减少了客户需要知道的名字。另外，这些模式使客户无需改变就可以使用和具体应用相关的类。
+
+Additional benefits of the Prototype pattern are listed below。
+
+额外的一些优点。
+
+\begin{enumerate}
+
+\item Adding and removing products at run-time.
+
+	  在运行时增加和删除产品。
+	  
+	  Prototype允许只通过客户注册原型实例就可以将一个新的具体产品类并入系统。它比其它创建型模式更为灵活，因为客户可以在运行时刻建立和删除原型。
+
+\item Specifying new objects by varying values.
+
+      通过扩展值来指定新的对象。
+
+	  高度动态的系统允许你通过对象复合定义新的行为——例如，通过为一个对象变量指定值——并且不定义新的类。你通过实例化已有类并且将这些实例注册为客户对象的原型，就可以有效定义新类别的对象。客户可以将职责代理给原型，从而表现出新的行为。
+
+	  这种设计使得用户无需编程即可定义新“类”。实际上，克隆一个原型类似于实例化一个类。Prototype模式可以极大的减少系统所需要的类的数目。在我们的音乐编辑器中，一个GraphicTool类可以创建无数种音乐对象。
+
+\item Specifying new objects by varying structure.
+
+	  通过扩展结构来指定新的对象。
+
+	  高度动态系统许多应用由部件和子部件来创建对象。例如电路设计编辑器就是用电路来构造电路的（这样的应用反映了Composite和Decorator模式）。为方便起见，这样的应用通常允许你实例化复杂的、用户定义的结构，比方说，一次又一次的重复使用一个特定的子电路。
+
+	  Prototype模式也支持这一点。我们仅需将这个子电路作为一个原型增加到可用的电路元素选择板中。只要复合电路对象将Clone实现为一个深拷贝（deep copy），具有不用结构的电路就可以是原型了。
+
+\item Reduced subclassing. 
+
+      减少子类。
+
+	  经常产生一个与产品类层次平行的Creator类层次。Prototype模式使得你克隆一个原型而不是请求一个工厂方法去产生一个新的对象。因此你根本不需要Creator类层次，这一优点主要适用于像C++这样不将类作为一级类对象的语言。像Smalltalk和Objective C这样的语言从中获益较少，因为你总是可以用一个类对象作为生成者。在这些语言中，类对象已经起到原型一样的作用了。
+
+\item Configuring an application with classes dynamically.
+
+	  用动态类配置应用。
+
+	  一些运行时刻环境允许你动态将类装载到应用中。在像C++这样的语言中，Prototype模式是利用这种功能的关键。
+
+	  一个希望创建动态载入类的实例的应用不能静态引用类的构造器。而应该由运行环境在载入时自动创建每个类的实例，并用原型管理器来注册这个实例。这样应用就可以向原型管理器请求装载新的类的实力，这些类原本并没有和程序相连接。ET++应用框架有一个运行系统就是使用这一方案的。
+
+	  Prototype的主要缺陷是每一个Prototype的子类都必须实现Clone操作，这可能很困难。例如，当所考虑的类已经存在时就很难新增Clone操作。当内部操作包括一些不支持拷贝或有循环引用的对象时，实现克隆可能也会很困难的。
+
+      因为像C++这样的静态语言，类不是对象，并且运行时刻只能得到很少或者得不到任何类型信息，所以Prototype特别与哦用。而在Smalltalk或Objective C这样的语言中Prototype就不是那么重要了，因为这些语言提供了一个等价于原型的东西（即类对象）来创建每个类的实例。Prototype模式在像Self这样既语言性的语言中是固有的，所有对象的创建都是通过克隆一个原型实现的。
+
+	  在实现原型时，要考虑下面的一些问题：
+	  
+	  \begin{enumerate}
+
+	  \item 使用一个原型管理器
+
+	  当一个系统中原型数目不固定时（也就是说，他们可以动态创建和销毁），要保持一个可用原型的注册表。客户不会自己来管理原型，但会在注册表中存储和检索原型。客户在克隆一个原型前会向注册表请求该原型。我们称这个注册表为原型管理器（Prototype Manager）。
+
+	  原型管理器是一个关联存储器（associative store），它返回一个与给定关键字相匹配的原型。它有一些操作可以用来通过关键字注册原型和解除注册。客户可以在运行时更或是浏览这个这个注册表，这使得客户无需编写代码就可以扩展并得到系统清单。
+
+	  \item 实现克隆操作
+
+	  Prototype模式最困难的部分在于正确实现Clone操作。当对象结构包含循环引用时，这尤为棘手。
+
+	  大多数语言都对克隆对象提供了一些支持。例如，Smalltalk提供了一个copy的实现，它被所有Object的子类所继承。C++提供了一个拷贝构造器。但这些设施并不能解决“浅拷贝和深拷贝”问题，也就是说，克隆一个对象是依次克隆他的实例变量呢，或者还是由克隆对象和原对象共享这些变量？
+
+	  浅拷贝简单并且通常也就足够了，它是Smalltalk所缺省提供的。C++中的缺省拷贝构造器实现按成员拷贝，这意味着在拷贝的和原来的对象之间是共享指针的。但克隆一个结构复杂的原型通常需要深拷贝，因为复制对象和原对象必须相互独立。因此你必须保证克隆对象的构件也是对原型的构件的克隆。克隆迫使你决定如果所有东西都被共享了该怎么办。
+
+ 	  如果系统中的对象提供了save和load操作，那么你只需要通过保存对象和立刻载入对象，就可以为clone操作提供一个缺省实现。save操作将该对象保存在内存缓冲区中，而load则通过从该缓冲区中重构这个对象来创建一个副本。
+
+	  \item 初始化克隆对象
+
+	  当一些客户对克隆对象已经相当满意时，另一些客户将会希望使用他们所选择的一些值来初始化该对象的一些或是所有的内部状态。一般来说不可能再clone操作中传递这些值，因为这些值的数目由于原型的类的不同而会有所不同。一些原型可能需要多个初始化参数，另一些可能什么也不需要。在Clone操作中传递参数会破坏克隆接口的统一性。
+
+	  可能会这样，原型的类已经为（重）设定一些关键的状态值定义好了操作。如果这样的话，客户在克隆后马上就可以使用这些操作。否则，你就可能不得不引入一个Initialize操作，该操作使用初始化参数并据此设定克隆对象的内部状态。注意深拷贝clone操作——一些复制在你重新初始化它们之前可能必须要被删除掉（删除可以显式地做也可以在Initialize内部做）。
+
+	  \end{enumerate}
+
+\end{enumerate}
 
 
