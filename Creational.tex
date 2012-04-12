@@ -729,10 +729,28 @@ class Singleton
 
 \end{schemedisplay}
 
-	Register以给定名字注册Singleton实例。为保证注册表简单，我们将让它存储一列NameSingletonPair对象。每个NameSingletonPair将一个名字映射到一个单体。Lookup操作根据给定单体的名字进行查找
+	Register以给定名字注册Singleton实例。为保证注册表简单，我们将让它存储一列NameSingletonPair对象。每个NameSingletonPair将一个名字映射到一个单体。Lookup操作根据给定单体的名字进行查找。我们假定一个环境变量指定了所需要的单体的名字。
 
+\beign{schemedisplay}
+
+Singleton* Singleton::Instance(){
+	if(_instance == 0)
+		const char* singletonName = getenv(*SINGLETON*);
+
+	_instance = Lookup(singletonName);
+}
+
+\end{schemedisplay}
 	  
+	Singleton类在何处注册它们自己？一种可能是在它们的构造器中。例如，MySingleton子类可以像下面这样做：
 
+\begin{schemedisplay}
+
+MySingleton::MySingleton(){
+	Singleton::Resgister(*MySingleton*, this);
+}
+
+\end{schemedisplay}
 
 
 
