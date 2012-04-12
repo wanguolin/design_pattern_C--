@@ -595,3 +595,148 @@ Additional benefits of the Prototype pattern are listed below。
 \scminput{code/Creational/Prototype/PrototypePhoenix.h}
 \scminput{code/Creational/Prototype/PrototypePhoenix.cpp}
 \scminput{code/Creational/Prototype/client.cpp}
+
+\section{Singleton 单体}
+
+\subsection{Structure 结构}
+
+\htmlpic{images/Singleton.png}
+
+\subsection{Participants 组成}
+
+\begin{itemize}
+\small
+	\item \textbf{Singletons}
+	\begin{itemize}
+	
+		\item defines an Instance operation that lets clients access its unique instance. Instance is a class operation ( that is, a class method in Smalltalk and a static member function in C ).
+
+		\item may be responsible for creating its own unique instance.
+
+	\end{itemize}
+\normalize
+\end{itemize}
+
+\subsection{Collaborations 协作}
+
+\begin{itemize}
+
+	\item Clients access a Singleton instance solely through Singleton's Instance operation.
+
+\end{itemize}
+
+\subsection{Consequences GoF评论}
+
+The Singleton pattern has several benefits:
+
+\begin{enumerate}
+
+	\item Controlled access to sole instance.
+
+	限制访问单一实例。
+	
+	Singleton类封装了它的唯一实例，它可以控制客户何时以及如何访问。
+
+	\item Reduced name space.
+
+	削减名字空间。
+
+	Singleton模式是对全局变量的一种改进。它避免了那些存储唯一实例的全局变量污染名字空间。
+
+	\item Permits refinement of operations and represenrarion.
+
+	允许精炼操作和表示。
+
+	Singleton类可以有子类，而且用这个扩展类的实例来配置一个应用是很容易的。你可以用你所需要的类的实例在运行时刻配置应用。
+
+	\item Permits a veriable number of instances.
+
+	允许可变数目的实例。
+
+	这个模式使得你易于改变你的想法，并允许Singleton类出现更多的实例。此外，你可以用相同的方法来控制应用所使用的实例的个数。只有允许访问Singleton实例的操作需要改变。
+
+	\item More flexible than class operations.
+
+	比类操作更灵活。
+
+	另一种封装单件功能的方法是使用类操作（即C++中静态成员函数或者Smalltalk中的类方法）。但这两种语言技术都难以改变设计以允许一个类有多个示例。此外，C++中的静态成员函数不是虚函数，因此子类不能多态的重新定义它们。
+
+\end{enumerate}
+
+\subsection{Implentation 实现}
+
+Here are implementation issues to consider when using the Singleton pattern:
+
+\begin{itemize}
+
+\item Ensuring a unique instance.
+
+      确保唯一的实例。
+
+	  Singleton模式使得这个唯一实例是类的一般实例，但该类被写成只有一个实例能被创建。做到这一点的一个常用方法是将创建这个实例的操作隐藏在一个类操作（即一个静态成员函数或是一个类方法）后面，由它保证只有一个实例被创建。这个操作可以访问保存唯一实例的变量，而且它可以保证这个变量在返回值之前用这个唯一实例初始化。这种方法保证了单件在他的首次使用被创建和使用。
+
+	  在C++中你可以用Singleton类的静态成员函数Instance来定义这个类操作。Singleton还定义了一个静态成员变量_instance，它包含了指向它的唯一实例的指针。
+
+	  客户仅通过Instance成员函数访问这个单件。变量_instance初始化为0，而静态成员函数Instance返回该变量值，如果其值为0则用唯一实例初始化它。Instance使用惰性（lazy）初始化；它的返回值知道被第一次访问时才创建和保存。
+
+	  \textbf{注意构造器是保护型的。试图直接实例化Singleton的客户将得到一个编译时的错误信息。这就保证了只有一个实例可以被创建。}
+
+	  此外，因为_instance是一个指向Singleton对象的指针，Instance成员函数可以将一个指向Singleton的子类的指针赋给这个变量。见代码实现。
+
+	  关于C++实现还有一点需要注意。将单体定义为一个全局或静态的对象，然后依赖于自动的初始化，这是不够的，有如下的三个原因：
+
+	  \begin{enumerate}
+	  \item 我们不能保证静态对象只有一个实例会被声明。
+
+	  \item 我们可能没有足够的信息在静态初始化时实例化每一个单体。单体可能需要在程序执行中稍后被计算出来的值。
+
+	  \item C++没有定义转换单元(translation unit)上全局对象的构造器的调用顺序。这就意味着单体之间不存在依赖关系，如果有，那么错误将是不可避免的。
+
+	  使用全局/静态对象的实现方法还有一个缺点，它使得所有单体无论用到与否都要被创建，使用静态成员函数避免了所有这些问题。
+	  \end{enumerate}
+
+\item Subclassing the Singleton class.
+
+	  创建Singleton类的子类。
+
+	  主要问题与其说是定义子类不如说是建立它的唯一实例，这样客户就可以使用它。事实上，指向单体实例的变量必须用子类的实例进行初始化。最简单的技术是在Singleton的Instance操作中决定你想使用的哪一个单体。
+
+	  另一个选择Singleton的子类的方法是将Instance的实现从父类中分离出来并把它放入子类。这就允许C++程序员在链接时刻决定单体的类（即通过链入一个包含不同实现的对象文件），但对单体的客户则隐藏这一点。
+
+	  链接的方法在链接时刻决定了单体类的选择，这使得难以在运行时刻选择单体类。使用条件语句来决定子类更加灵活一些，但这影星限定了可能的Singleton类的集合。这两种方法不是在所有情况都足够灵活的。
+
+	  一个更灵活的方法是使用单件注册表。可能的Singleton类的集合不使用Instance定义的，Singleton类可以根据名字在一个众所周知的注册表中注册他们的单体实例。
+
+	  这个注册表在字符串名字和单体之间建立映射。当Instance需要一个单体是，他参考注册表根据名字请求单体。
+
+	  这个超标查询相应的单体（如果存在的话）并返回它。这个方法使得Instance不再需要知道所有可能的Singleton类或实例。它所需要的知识所有Singleton类的一个公共的接口，该接口包括了对注册表的操作。
+
+\begin{schemedisplay}
+
+class Singleton
+{
+	public:
+		static void Register( const char* name, Singleton*);
+		static Singleton* Instance();
+
+	protected:
+		static Singleton* Lookup( const char* name);
+
+	private:
+		static Singleton* _instance;
+		static List<NameSingletonPair>* _registry;
+};
+
+\end{schemedisplay}
+
+	Register以给定名字注册Singleton实例。为保证注册表简单，我们将让它存储一列NameSingletonPair对象。每个NameSingletonPair将一个名字映射到一个单体。Lookup操作根据给定单体的名字进行查找
+
+	  
+
+
+
+
+
+
+
+
