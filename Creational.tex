@@ -752,9 +752,47 @@ MySingleton::MySingleton(){
 
 \end{schemedisplay}
 
+	当然，除非实例化类否则这个构造器不会被调用，这正反映了Singleton模式试图解决的问题。在C++中我们可以定义MySingleton的一个静态实例来避免这个问题。例如我们可以在包含MySingleton实现的文件中定义：
+
+\begin{schemedisplay}
+
+static MySingleton theSingleton;
+
+\end{schemedisplay}
+
+    Singleton类不再负责创建单体，它的主要职责是使得供选择的单间对象在系统中可以被访问。静态对象方法还是有一个潜在的缺点——也就是所有可能的Singleton子类的实例都必须被创建，否则它们不会被注册。
 
 
+\subsection{RelatedPatterns 相关模式}
 
+很多模式可以使用Singleton模式实现，参见AbstractFactory、Builder和Prototype。
 
+\section{Discussion of Creational Pattern 创建型模式的讨论}
+
+用一个系统创建的那些对象的类对系统进行参数化有两种常用方法。一种是生成创建对象的类的子类；这对应于FactoryMethod模式。这种方法的主要缺点是，仅为了改变产品类，就可能需要创建一个新的子类。这样的改变可能是级联的。例如，如果产品的创建者本身是由一个工厂方法创建的，那么你也必须重定义它的创建者。
+
+另一种对系统进行参数化的方法更多的依赖于对象复合：定义一个对象负责明确产品对象的类，并将它作为该系统的参数。这是AbstractFactory、Builder和Prototype模式的关键特征。所有这三个模式都涉及到创建一个新的负责创建产品对象的“工厂对象”。AbstractFactory由这个工厂对象产生多个类的对象。Builder由该工厂对象通过拷贝原型对象来创建产品对象。在这种情况下，因原型负责返回产品对象，所以工厂对象和原型是同一个对象。
+
+考虑在Prototype模式中描述的绘图编辑器框架，可以有多种方法通过产品类来参数化GraphicTool：
+
+\begin{itemize}
+
+	\item 使用FactoryMethod模式，将为选择板中的每个Graphic的子类创建一个GraphicTool的子类。GraphicTool将有一个NewGraphic操作，每个GraphicTool的子类都会重定义它。
+
+	\item 使用AbstractFactory模式，将有一个GraphicsFactory类层次对应于每个Graphic的子类。在这种情况每个工厂仅创建一个产品：CircleFactory将创建Circle，LineFactory将创建Line，等等。GraphicTools将以创建和始终类的Graphic的工厂作为参数。
+
+	\item 使用ProtoType模式，每个Graphic的子类将实现Clone操作，并且GraphicTool将以它所创建的Graphic的原型作为参数。
+
+\end{itemize}
+
+究竟哪一种模式最好取决于诸多因素。在我们的绘图编辑器框架中，第一眼看来FactoryMethod模式使用是最简单的。它易于定义一个新的GraphicTool的子类，并且仅当选择半被定义了的时候，GraphicTool的实例才被创建。它的主要缺点在于GraphicTool子类数据的激增，并且它们都没有做很多事情。
+
+AbstractFactory并没有很大的改进，因为它需要一个同样庞大的GraphicsFactory类层次。只有当早已存在一个GraphicsFactory类层次时，AbstractFactory才比FactoryMethod方法更好一点——或是因为编译器自动提供（像在Smalltalk或是Objective C中）或是因为系统的其他部分需要这个GraphicsFactory类层次。
+
+总的来说，Prototype模式对绘图编辑框架可能是最好的，因为它仅需要为每个Graphics类实现一个Clone操作。这就减少了类的数目，并且Clone可以用于其他目的而不仅仅是纯粹的实例化（例如，一个Duplicate菜单操作）。
+
+FactoryMethod是一个设计可以定制且只略微有一些复杂。其他设计模式需要新的类，而FactoryMethod只需要一个新的操作。人们通常将FactoryMethod作为一种标准的创建对象的方法。但是当被实例化的类根本不发生变化或当实例化出现在子类可以很容易重定义的操作中（比如在初始化操作中）时，这就并不必要了。
+
+使用AbstractFactory、Prototype或Builder的设计甚至比使用FactoryMethod的那些设计更灵活，但他们也更加复杂。通常，设计以使用FactoryMethod开始，并且当设计者发现需要更大的灵活性时，设计便会向其他创建型模式演化。当你在设计标准之间进行权衡的时候，了解多个模式可以给你提供更多的选择余地。
 
 
