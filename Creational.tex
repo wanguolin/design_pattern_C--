@@ -21,10 +21,6 @@ Creational design patterns abstract the instantiation process. They help make a 
 
 有时创建型模式是互相竞争的。例如，在有些情况下\ref{Prototype}或\ref{AbstractFactory}用起来都很好，而另外一些情况下它们是互补的：\ref{Builder}可以使用其他模式去实现某个组件的创建。\ref{Prototype}可以在它的实现中使用\ref{Singleton}。
 
-
-
-
-
 \xrtag{AbstractFactory}{AbstractFactory 抽象工厂}
 \section{AbstractFactory - 抽象工厂}
 
@@ -35,8 +31,6 @@ Kit
 \subsection{Structure 结构}
 
 \htmlpic{images/AbstractFactory.png}
-
-在上图中AbstractFactory、AbstractProductA和AbstractProductB这三个抽象基类，分别派生出用来产生两种实际产品A和B的类厂1和2，经由这两个类厂的CreateProductA和CreateProductB方法使用AbstractProduct所派生出的两类具体产品家族来生产A和B所下辖1-2型产品。
 
 \subsection{Participants 组成}
 
@@ -51,7 +45,7 @@ Kit
 \item \textbf{ConcreteFactory} (MotiWidgetFactory, PMWidgetFactory)
 	
 	\begin{itemize}
-		\item  operations to create concrete product objects.
+		\item  implents the operations to create concrete product objects.
 	\end{itemize}
 
 \item \textbf{AbstractProduct} (Window, ScrollBar)
@@ -76,11 +70,19 @@ Kit
 \normalize
 \end{itemize}
 
+\subsection{Collaborations 协作}
+
+\begin{itemize}
+\item 通常在运行时刻创建一个ConcreteFactory类的实例。这一具体的工厂创建具有特定实现的产品对象。为创建不同的产品对象，客户应使用不同的具体工厂。
+
+\item AbstractFactory将产品对象的创建延迟到它的ConcreteFactory子类。 
+\end{itemize}
+
 \subsection{Intent 意图} 
 
 Provide an interfact for creating families of related or dependent objects without specifying their concrete classes.
 
-在无需指定具象接口的情况下，提供了一个接口，用来创建一族互相关联或者依赖的对象。
+在无需指定具象接口的情况下，提供了一个接口，用来创建一组互相关联或者依赖的对象。
 
 \subsection{Applicability 适用性}
 
@@ -107,24 +109,31 @@ Provide an interfact for creating families of related or dependent objects witho
 \xrtag{AbstractFactory优缺点}{AbstractFactory"优缺点"}
 The AbstractFactory pattern has the following benefits and liabilities:
 
-抽象工厂模式有着如下的便利和负担：
+抽象工厂模式有着如下的优缺点：
 
 \begin{enumerate}
 
 \item It isolates concrete classes.
 
-      抽象工厂分离了接口和实现。
+	  它分离了具体的类。
+
+	  AbstractFactory模式帮助你控制一个由应用创建的对象的类。因为一个工厂封装创建产品对象的责任和过程，它将客户与类的实现分离，客户通过它们的抽象接口操纵实例。产品的类名也在具体工厂的实现中被分离；它们不出现在客户代码中。
 
 \item It makes exchanging product families easy.
-    
-      产品有产品的共同抽象基类，工厂有各自工厂的抽象基类，他们的生命周期在C++中可以通过各自的基类指针统一管理。
 
+      它使得产品类型易于交换。 
+
+	  一个具体工厂类在一个应用中仅出现一次——即在它初始化的时候。这使得改变一个应用的具体工厂变得很容易。它只需改变具体的工厂即可使用不同的产品配置，这是因为一个抽象工厂创建了一个完整的产品系列，所以整个产品系列会立刻改变。
 
 \item It promotes consistency among products.
 
-      拥有共同的抽象基类不同的产品系列可以经由共同的工厂抽象基类所派生出来的不同类厂所一致。
+	  它提升了产品一致性。
+
+	  当一个系列中的产品对象被设计为一起工作时，一个应用一次只能使用同一个系列中的对象，这一点很重要。而AbstractFactory很容易实现这一点。
 
 \item Supporting new kinds of products is difficult.
+
+	  难以支持新的产品种类。	
 
       AbstractFactory这个抽象基类最初的纯虚方法限制了所能产生的对象集合，在实际开发中如果扩展产品，需要修改基类和所有派生类的代码，导致维护代价和大规模代码重新编译的代价。
 \end{enumerate}
@@ -135,15 +144,27 @@ The AbstractFactory pattern has the following benefits and liabilities:
 
 \item Fatories as Singletons.
 
-      若是应用中需要每个产品仅有一个实例存在，可使用Singleton模式。
+	  将工厂作为\ref{Singleton}
+
+	  一个应用中一般每个产品系列只需要一个ConcreteFactory的实例。因此工厂通常最好实现为一个\ref{Singleton}。
 
 \item Creating the products.
 
-      如果有多个可能的产品系列，每个可能的产品系列虽然差别很小，仍需不同的工厂实现，因此可以考虑通过复制原型创建新的产品，参考Prototype模式实现。
+	  创建产品
+
+	  AbstractFactory仅声明一个创建产品的接口，真正创建产品是由ConcreteProduct子类实现的，最通常的办法是为每一个产品定义一个ref{FactoryMethod}。一个具体的工厂将为每个产品重定义该工厂方法以指定产品。虽然这样实现很简单，但它却要求每个产品系列都要有一个新的具体工厂子类，即使这些产品系列的差别很小。
+
+	  如果有多个可能的产品系列，具体工厂也可以使用\ref{Prototype}来实现。具体工厂使用产品系列中每一个产品的原型实例来初始化，且它通过复制它的原型来创建新的产品。在基于原型的方法中，使得不是每个新的产品系列都需要一个新的具体工厂类。
 
 \item Defining extensible factories.
 
-      鉴于\ref{AbstractFactory优缺点}中提到的维护代价，有一种不够安全和良好的编码习惯，可以在构造时刻增加入参，来区别新的对象类型。对于C++这样的强类型语言来说，如果需要与特定的派生类别进行相关操作，而该操作又不能通过抽象接口所得到，用户可能会考虑使用dynamic—_cast转换，此举并非安全，因为可能会导致转换失败，这是权宜之计。
+      定义可扩展的工厂
+
+	  AbstractFactory通常为每一种它可以生产的产品定义一个操作。产品的种类被编码在操作型构中。增加一种新的产品要求改变AbstractFactory的接口以及所有与它相关的类。一个更灵活但不太安全的设计是给创建对象的操作增加一个参数。该参数指定了将被创建的对象的种类。它可以是一个类标识符、一个整数、一个字符串，或其他任何可以标识这种产品的东西。实际上使用这种方法，AbstractFactory只需要一个Make操作和一个知识要创建对象的种类的参数。这是前面已经讨论过的基于原型的和基于类的抽象工厂的技术。
+
+	  与C++这样的静态类型语言相比，这一变化更容易用在类似于Smalltalk这样的动态类型语言中。仅当所有对象都有相同的抽象基类，或者当产品对象可以被请求它们的客户安全的强制转换成正确类型时，你才能够在C++中使用她。\ref{FactoryMethodImp}说明了怎样在C++中实现这样的参数化操作。
+
+	  该方法即使不需要强制类型转换，但仍有一个本质的问题：所有的产品将返回类型所给定的相同抽象接口返回给客户。客户将不能区分或对一个产品的类型进行安全的假定。如果客户需要进行与特定子类相关的操作，而这些操作又不能通过抽象接口得到。虽然客户可以实施一个向下类型转换（例如C++中用dynamic_cast），但这并不总是可行或安全的，因为向下类型转换可能会失败。这是一个典型的高度灵活和可扩展接口的权衡折衷。
 
 \end{enumerate}
 
