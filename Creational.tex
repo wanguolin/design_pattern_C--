@@ -138,6 +138,7 @@ The AbstractFactory pattern has the following benefits and liabilities:
       AbstractFactory这个抽象基类最初的纯虚方法限制了所能产生的对象集合，在实际开发中如果扩展产品，需要修改基类和所有派生类的代码，导致维护代价和大规模代码重新编译的代价。
 \end{enumerate}
 
+\xrtag{AbstractFactoryImp}{AbstractFactory 实现}
 \subsection{Implentation 实现}
 
 \begin{enumerate}
@@ -162,7 +163,7 @@ The AbstractFactory pattern has the following benefits and liabilities:
 
 	  AbstractFactory通常为每一种它可以生产的产品定义一个操作。产品的种类被编码在操作型构中。增加一种新的产品要求改变AbstractFactory的接口以及所有与它相关的类。一个更灵活但不太安全的设计是给创建对象的操作增加一个参数。该参数指定了将被创建的对象的种类。它可以是一个类标识符、一个整数、一个字符串，或其他任何可以标识这种产品的东西。实际上使用这种方法，AbstractFactory只需要一个Make操作和一个知识要创建对象的种类的参数。这是前面已经讨论过的基于原型的和基于类的抽象工厂的技术。
 
-	  与C++这样的静态类型语言相比，这一变化更容易用在类似于Smalltalk这样的动态类型语言中。仅当所有对象都有相同的抽象基类，或者当产品对象可以被请求它们的客户安全的强制转换成正确类型时，你才能够在C++中使用她。\ref{FactoryMethodImp}说明了怎样在C++中实现这样的参数化操作。
+	  与C++这样的静态类型语言相比，这一变化更容易用在类似于Smalltalk这样的动态类型语言中。仅当所有对象都有相同的抽象基类，或者当产品对象可以被请求它们的客户安全的强制转换成正确类型时，你才能够在C++中使用她。\ref{FactoryMethod}说明了怎样在C++中实现这样的参数化操作。
 
 	  该方法即使不需要强制类型转换，但仍有一个本质的问题：所有的产品将返回类型所给定的相同抽象接口返回给客户。客户将不能区分或对一个产品的类型进行安全的假定。如果客户需要进行与特定子类相关的操作，而这些操作又不能通过抽象接口得到。虽然客户可以实施一个向下类型转换（例如C++中用dynamic_cast），但这并不总是可行或安全的，因为向下类型转换可能会失败。这是一个典型的高度灵活和可扩展接口的权衡折衷。
 
@@ -170,33 +171,72 @@ The AbstractFactory pattern has the following benefits and liabilities:
 
 \subsection{代码实现}
 
-    先用头文件定义两个抽象基类，其中抽象工厂具有两个必须在派生类中被实现，抽象基类无需实现的纯虚函数，用来留给所派生的不同的工厂用自家的创造方法来重载。考虑到对象实例可能具有不同的销毁方式，定义了虚析构。
+AbstractFactory.h 头文件定义了两个纯虚函数CreateNormal和CreateLiterature，后面具体工厂实现，普通青年工厂和文学青年工厂实现这两个纯虚函数。
 \scminput{code/Creational/AbstractFactory/AbstractFactory.h}
+
+AbstractTeenager.h 抽象的青年们的纯虚基类，也可以和AbstractoryFactory.h 头文件一样定义一些青年们共同的抽象方法。我这里没有做。
 \scminput{code/Creational/AbstractFactory/AbstractTeenager.h}
 
-    接下来普青产品经理和普青程序员有着共同的抽象基类，抽象青年。
+接下来派生出来具体的青年的实现：普通青年产品经理和普通青年程序员。
 \scminput{code/Creational/AbstractFactory/NormalTeenagerPM.h}
 \scminput{code/Creational/AbstractFactory/NormalTeenagerPM.cpp}
 \scminput{code/Creational/AbstractFactory/NormalTeenagerProgrammer.h}
 \scminput{code/Creational/AbstractFactory/NormalTeenagerProgrammer.cpp}
 
-    同样，文青产品经理和文青程序员也有着共同的抽象基类。
+文学青年产品经理和文学青年程序员。
+
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerPM.h}
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerPM.cpp}
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerProgrammer.h}
 \scminput{code/Creational/AbstractFactory/LiteratureTeenagerProgrammer.cpp}
 
-    现在派生出来一个专门生产产品经理的工厂。
+现在派生出来一个专门生产产品经理的工厂。
 \scminput{code/Creational/AbstractFactory/PMFactory.h}
 \scminput{code/Creational/AbstractFactory/PMFactory.cpp}
 
-    再派生一个专门生产程序员的工厂。
+再派生一个专门生产程序员的工厂。
 \scminput{code/Creational/AbstractFactory/ProgrammerFactory.h}
 \scminput{code/Creational/AbstractFactory/ProgrammerFactory.cpp}
 
-    两个工厂基类类型的指针指向两种不同的工厂实例，各种青年的一个容器，构造和析构
+两个工厂基类类型的指针指向两种不同的工厂实例，各种青年的一个容器，构造和析构
 \scminput{code/Creational/AbstractFactory/client.cpp}
 
+在\ref{AbstractFactoryImp}中提到具体工厂可以实现为\ref{Singleton}。代码示意如下：
+
+\begin{schemedisplay}
+
+class PMFactory : AbstractFactory
+{
+	public:
+		static _instance;
+		static AbstractFactory* Instance();
+	private:
+		PMFactory(){}
+		~PMFactory(){}
+};
+
+\end{schemedisplay}
+
+或是使用\ref{Prototype}：
+
+\begin{schemedisplay}
+
+class PMFactory : AbstractFactory
+{
+	public:
+		PMFactory(){}
+		PMFactory( PMFactory& refObj){}
+		AbstractFactory* Clone()
+		{
+			return new PMFactory( *this);
+		}
+		~PMFactory();
+	
+}
+
+\end{schemedisplay}
+
+\ref{AbstractFactoryImp}参数化操作，略。
 
 \xrtag{Builder}{Builder 构建器}
 \section{Builder - 构建器}
