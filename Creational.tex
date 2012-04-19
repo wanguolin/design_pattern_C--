@@ -245,8 +245,6 @@ class PMFactory : AbstractFactory
 
 \htmlpic{images/Builder.png}
 
-图中Director的构造函数持有Builder基类指针，Director在构造时刻传入同样Builder指针所指向的不同派生类实例，使Director构造出来不同的具体对象。
-
 \subsection{Participants 组成}
 
 \begin{itemize}
@@ -286,6 +284,7 @@ class PMFactory : AbstractFactory
 \subsection{Intend 意图}
 
 Separate the construction of a complex object from its representation so that the same construction process can create different representation.
+
 分离复杂对象的构造和表现，以此达到通过同样构建过程创造不同表现的目的。
 
 \subsection{Applicability 适用性}
@@ -318,6 +317,7 @@ Separate the construction of a complex object from its representation so that th
 
 \end{enumerate}
 
+\xrtag{BuilderImp}{Builder 实现}
 \subsection{Implentation 实现}
 
 Typically there's an abstract Builder class that defines an operation for each component that a director may ask it to create. The operations do nothing by default. A ConcreteBuilder class overrides operations for components it's interested in creating.
@@ -350,6 +350,8 @@ Here are other implementation issues to consider:
 
 \subsection{代码实现}
 
+这段代码比较简单：通过Builder方法，这段代码中，导向器（Director）类似中转站，他接受基类指针，指向不同的Builder的实例，在不同Builder的实例中，调用具体方法，实现不同的行为（在这个例子中，使用阿拉伯和英文分别数1-2-3）
+
 \scminput{code/Creational/Builder/Builder.h}
 \scminput{code/Creational/Builder/ArabicBuilder.h}
 \scminput{code/Creational/Builder/ArabicBuilder.cpp}
@@ -359,6 +361,8 @@ Here are other implementation issues to consider:
 \scminput{code/Creational/Builder/Director.cpp}
 \scminput{code/Creational/Builder/Director.h}
 \scminput{code/Creational/Builder/client.cpp}
+
+\ref{BuilderImp}中提到的第三条，指的是基类的Builder方法可以不声明为纯虚函数，这样可以不强制重载而通过编译，跳过某个构建步骤或行文。
 
 \xrtag{FactoryMethod}{FactoryMethod 工厂方法}
 \section{FactoryMethod 工厂方法}
