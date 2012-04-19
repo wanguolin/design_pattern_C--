@@ -317,6 +317,25 @@ Separate the construction of a complex object from its representation so that th
 
 \end{enumerate}
 
+\subsection{Consequences 协作}
+
+\begin{enumerate}
+
+\item 客户创建Director对象，并用它所想要的Builder对象进行配置。
+
+\item 一旦产品部件被生成，导向器就会通知生成器。
+
+\item 生成器处理导向器的请求，并将部件添加到该产品中。
+
+\item 客户从生成器中检索产品。
+
+\end{enumerate}
+
+下面的交互图说明了Builder和Director是如何与一个客户协作的。
+
+\htmlpic{images/BuilderConsequences.png}
+
+
 \xrtag{BuilderImp}{Builder 实现}
 \subsection{Implentation 实现}
 
