@@ -1,0 +1,25 @@
+\xrtag{Structural}{Structural 创建型}
+\chapter{Structural 结构型}
+
+Structural patterns are concerned with how classes and objects are composed to form larger structures. Structural class patterns use inheritance to compose interfaces or implementations.
+
+结构型模式涉及到如何组合类和对象以获得更大的结构。结构型类模式采用继承机制来组合接口或实现。
+
+一个简单的例子是采用多重继承方式将两个以上的类组合成一个类，结果这个类包含了所有父类的性质。这一模式尤其有助于多个独立开发的类库协同工作。另外一个例子是类型是的Adapter模式。一般来说，适配器使得一个接口与其它接口兼容，从而给出了多个不同接口的统一抽象。为此，类适配器对一个Adaptee类进行私有继承。这样，适配器就可以用Adaptee的接口表示他的接口。
+
+结构型对象模式不是对接口和实现进行组合，而是描述了如何对一些对象进行组合，从而实现新功能的一些方法。因为可以在运行时刻改变对象组合关系，所以对象组合方式具有更大的灵活性，而这种机制用静态类组合是不可能实现的。
+
+
+\section{Adapter 适配器}
+
+\subsection{Structure 结构}
+
+A class adapter uses multiple inheritance to adapt one interface to another:
+
+\htmlpic{images/Structural_MultiInheritance.png}
+
+An object adapter relies on object composition:
+
+\htmlpic{images/Structural_ObjComposition.png}
+
+
