@@ -1,6 +1,11 @@
 \xrtag{Structural}{Structural 创建型}
 \chapter{Structural 结构型}
 
+\textbf{Also known as 别名}
+
+包装器 Wrapper
+
+
 Structural patterns are concerned with how classes and objects are composed to form larger structures. Structural class patterns use inheritance to compose interfaces or implementations.
 
 结构型模式涉及到如何组合类和对象以获得更大的结构。结构型类模式采用继承机制来组合接口或实现。
@@ -16,10 +21,22 @@ Structural patterns are concerned with how classes and objects are composed to f
 
 A class adapter uses multiple inheritance to adapt one interface to another:
 
-\htmlpic{images/Structural_MultiInheritance.png}
+类适配器使用多重继承对一个接口与另一个接口进行匹配，如下图所示：
+
+\htmlpic{images/Adapter_MultiInheritance.png}
 
 An object adapter relies on object composition:
 
-\htmlpic{images/Structural_ObjComposition.png}
+对象匹配器依赖于对象组合，如下图所示：
+
+\htmlpic{images/Adapter_ObjComposition.png}
+
+\subsection{Participants 组成}
+
+\begin{itemize}
+
+\item Target(Shape)
 
 
+
+\end{itemize}
