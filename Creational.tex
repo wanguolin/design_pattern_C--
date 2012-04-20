@@ -706,6 +706,10 @@ Additional benefits of the Prototype pattern are listed below。
 
 \subsection{代码实现}
 
+这段代码使用了C++中构造函数重载、引用传参和this关键字指针的几个特性，来实现Prototype的设计思想。在重载的构造函数“龙凤”的两个派生类中，重载了构造函数，在Clone中通过调用这个被重载的参数是自身类型引用的构造函数的构造，实现了对自身的拷贝构造。
+
+这段代码的示意了对龙凤的构造和他们之后克隆的计数。
+
 \scminput{code/Creational/Prototype/Prototype.h}
 \scminput{code/Creational/Prototype/PrototypeDragon.h}
 \scminput{code/Creational/Prototype/PrototypeDragon.cpp}
