@@ -381,7 +381,7 @@ Here are other implementation issues to consider:
 \scminput{code/Creational/Builder/Director.h}
 \scminput{code/Creational/Builder/client.cpp}
 
-\ref{BuilderImp}中提到的第三条，指的是基类的Builder方法可以不声明为纯虚函数，这样可以不强制重载而通过编译，跳过某个构建步骤或行文。
+\ref{BuilderImp}中提到的第三条，指的是基类的Builder方法可以不声明为纯虚函数，这样可以不强制重载而通过编译，跳过某个构建步骤或行为。
 
 \xrtag{FactoryMethod}{FactoryMethod 工厂方法}
 \section{FactoryMethod 工厂方法}
@@ -888,7 +888,18 @@ static MySingleton theSingleton;
 
 \subsection{RelatedPatterns 相关模式}
 
-很多模式可以使用Singleton模式实现，参见AbstractFactory、Builder和Prototype。
+很多模式可以使用Singleton模式实现，参见\ref{AbstractFactory}、\ref{Builder}和\ref{Prototype}。
+
+\subsection{代码实现}
+
+在下面的代码中，将Singleton类的构造函数声明为了protected，因此显式调用构造函数的时候会出现编译时刻的错误，必须通过Instance静态方法调用，在这个静态方法中有判断了static的成员指针，通过这些C++特性保证了Singleton模式创建出来的实例的唯一性。
+
+在代码中两次构造，都打印了this指针的地址，显示是同一实例。
+
+\scminput{code/Creational/Singleton/Singleton.h}
+\scminput{code/Creational/Singleton/Singleton.cpp}
+\scminput{code/Creational/Singleton/client.cpp}
+
 
 \section{Discussion of Creational Pattern 创建型模式的讨论}
 
@@ -900,11 +911,11 @@ static MySingleton theSingleton;
 
 \begin{itemize}
 
-	\item 使用FactoryMethod模式，将为选择板中的每个Graphic的子类创建一个GraphicTool的子类。GraphicTool将有一个NewGraphic操作，每个GraphicTool的子类都会重定义它。
+	\item 使用\ref{FactoryMethod}模式，将为选择板中的每个Graphic的子类创建一个GraphicTool的子类。GraphicTool将有一个NewGraphic操作，每个GraphicTool的子类都会重定义它。
 
-	\item 使用AbstractFactory模式，将有一个GraphicsFactory类层次对应于每个Graphic的子类。在这种情况每个工厂仅创建一个产品：CircleFactory将创建Circle，LineFactory将创建Line，等等。GraphicTools将以创建和始终类的Graphic的工厂作为参数。
+	\item 使用\ref{AbstractFactory}模式，将有一个GraphicsFactory类层次对应于每个Graphic的子类。在这种情况每个工厂仅创建一个产品：CircleFactory将创建Circle，LineFactory将创建Line，等等。GraphicTools将以创建和始终类的Graphic的工厂作为参数。
 
-	\item 使用ProtoType模式，每个Graphic的子类将实现Clone操作，并且GraphicTool将以它所创建的Graphic的原型作为参数。
+	\item 使用\ref{ProtoType}模式，每个Graphic的子类将实现Clone操作，并且GraphicTool将以它所创建的Graphic的原型作为参数。
 
 \end{itemize}
 
