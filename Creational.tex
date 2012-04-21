@@ -388,7 +388,7 @@ Here are other implementation issues to consider:
 
 \subsection{Structure 结构}
 
-\htmlpic{images/Factory.png}
+\htmlpic{images/FactoryMethod.png}
 
 \textbf{ As known as 别名 }
 
@@ -480,7 +480,7 @@ Define an interface for creating an object, but let subclasses decide which clas
 
 	  有了这些限制，最好使用一个独立的Manipulator对象实现交互并保存所需要的任何与特定操作相关的状态，不同的图形将使用不同的Manipulator子类来处理特定的交互。得到的Manipulator类层次与Figure类层次是平行的，至少是部分平行，如下图：
 
-	  \htmlpic{images/FactoryConsequence.png}
+	  \htmlpic{images/FactoryMethodConsequence.png}
 
 	  Figure类提供了一个可以创建一个与Figure相对应的Manipulator的CreateManipulator工厂方法，Figure的子类重载了这个方法来返回一个恰当的Manipulator子类的实例。Figure类可以实现CreateManipulator来返回一个默认的Manipuator实例，Figure子类也可以简单的默认继承。Figure类并不需要响应Manipulator子类层次，因此他们是部分并行的。
 
