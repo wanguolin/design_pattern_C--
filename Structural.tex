@@ -35,8 +35,37 @@ An object adapter relies on object composition:
 
 \begin{itemize}
 
-\item Target(Shape)
+\item \textbf{Target} (Shape)
 
+	\begin{itemize}
+		\item defines the domain-specific interface that Client uses.
+	\end{itemize}
 
+\item \textbf{Client} (DrawingEditor)
+
+	\begin{itemize}
+		\item collaborates with objects conforming to the Target interface.
+	\end{itemize}
+
+\item \textbf{Adaptee} (TextView)
+
+	\begin{itemize}
+		\item defines an existing interface that needs adapting.
+	\end{itemize}
+
+\item \textbf{Adapter} (TextShape)
+
+	\begin{itemize}
+		\item adapts the interface of Adaptee to the Target interface.
+	\end{itemize}
 
 \end{itemize}
+
+\subsection{Collaborations 协作}
+
+\begin{itemize}
+	\item Clients call operations on an Adapter instance. In turn, the adapter calls Adaptee operations that carry out the request.
+
+	客户在Adapter实例上调用一些操作。接着适配器调用Adaptee的操作实现这个请求。
+\end{itemize}
+
