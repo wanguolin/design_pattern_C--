@@ -115,8 +115,22 @@ An object adapter relies on object composition:
 
 	使用适配器的一个潜在问题是，它们不对所有的客户都透明。被适配的对象不再兼容Adaptee的接口，所以它们不能被Adaptee对象到处使用。双向适配器提供了这样的透明性。在不同的客户需要用不同的方法查看一个对象时，双向适配器尤其有用。
 
-
-
 \end{itemize}
+
+\subsection{Implementation 实现}
+
+尽管Adapter模式的实现方式通常简单直接，但是仍需要注意一下一些问题：
+
+\begin{itemize}
+
+	\item Implementing class adapters in C++.
+
+	使用C++实现适配器类。
+
+	在使用C++实现适配器类时，Adapter类应该采用公共方式继承Target类，并且用私有方式集成Adaptee类，因此，Adapter类应该是Target的子类型，但不是Adaptee的子类型。
+
+	\item Pluggable adapters.
+
+
 
 
