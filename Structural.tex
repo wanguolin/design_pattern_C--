@@ -131,6 +131,33 @@ An object adapter relies on object composition:
 
 	\item Pluggable adapters.
 
+	可插入适配器。
+
+	有许多方法可以实现可插入的适配器。
+
+	首先是为Adaptee找到一个窄接口，即可用于适配的最小操作集。因为包含较少操作的窄接口相对包含较多操作的宽接口比较容易进行匹配。
+
+	对这个窄接口，有以下三个实现途径。
+
+	\begin{itemize}
+
+		\item 使用抽象操作
+
+		\item 使用代理对象
+
+	\end{itemize}
+
+	在C++这样的静态类型语言中，需要一个代理的显式接口定义。
+
+	\item Parameterized adapters.
+
+	参数化的适配器。
+
+\end{itemize}
+
+\subsection{代码实现}
+
+
 
 
 
