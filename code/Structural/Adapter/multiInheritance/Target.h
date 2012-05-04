@@ -10,5 +10,4 @@ class Target
     virtual void Request() = 0;
 };
 
-
 #endif

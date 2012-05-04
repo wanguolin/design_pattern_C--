@@ -12,6 +12,6 @@ Adapter::~Adapter()
 
 void Adapter::Request()
 {
-    SpecificRequest();
+    Adaptee::SpecificRequest();
 }
 

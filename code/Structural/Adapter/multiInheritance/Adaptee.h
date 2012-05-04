@@ -7,7 +7,7 @@ class Adaptee
         Adaptee();
         ~Adaptee();
 
-    void SpecificRquest();
+    void SpecificRequest();
 };
 
 #endif

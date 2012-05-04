@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Adaptee::Apaptee()
+Adaptee::Adaptee()
 {
 
 }
@@ -15,5 +15,5 @@ Adaptee::~Adaptee()
 
 void Adaptee::SpecificRequest()
 {
-    cout << "Final Provider" << endl;
+    cout << "Final Provider from Adaptee" << endl;
 }
