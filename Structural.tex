@@ -157,7 +157,22 @@ An object adapter relies on object composition:
 
 \subsection{代码实现}
 
+以下是用多重继承实现的Adapter，Adaptee被私有继承。注意client.cpp中包含文件和组合不同，在写代码的时候想着编译器的预处理器对#include语句的内联展开，就不容易出错了。
 
+\scminput{code/Structural/Adapter/multiInheritance/Target.h}
+\scminput{code/Structural/Adapter/multiInheritance/Adapter.h}
+\scminput{code/Structural/Adapter/multiInheritance/Adapter.cpp}
+\scminput{code/Structural/Adapter/multiInheritance/Adaptee.h}
+\scminput{code/Structural/Adapter/multiInheritance/Adaptee.cpp}
+\scminput{code/Structural/Adapter/multiInheritance/client.cpp}
 
+以下用组合实现Adapter：
+
+\scminput{code/Structural/Adapter/objComposition/Target.h}
+\scminput{code/Structural/Adapter/objComposition/Adapter.h}
+\scminput{code/Structural/Adapter/objComposition/Adapter.cpp}
+\scminput{code/Structural/Adapter/objComposition/Adaptee.h}
+\scminput{code/Structural/Adapter/objComposition/Adaptee.cpp}
+\scminput{code/Structural/Adapter/objComposition/client.cpp}
 
 
